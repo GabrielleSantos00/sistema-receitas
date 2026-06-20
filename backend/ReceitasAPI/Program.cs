@@ -27,6 +27,38 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-// endpoints serão adicionados pelas outras integrantes
+// ─── CATEGORIAS ───
+app.MapGet("/categorias", async (AppDbContext db) =>
+    await db.Categorias.ToListAsync());
+
+app.MapGet("/categorias/{id}", async (int id, AppDbContext db) =>
+    await db.Categorias.FirstOrDefaultAsync(x => x.Id == id) is Categoria c
+        ? Results.Ok(c) : Results.NotFound());
+
+app.MapPost("/categorias", async (Categoria categoria, AppDbContext db) =>
+{
+    db.Categorias.Add(categoria);
+    await db.SaveChangesAsync();
+    return Results.Created($"/categorias/{categoria.Id}", categoria);
+});
+
+app.MapPut("/categorias/{id}", async (int id, Categoria input, AppDbContext db) =>
+{
+    var categoria = await db.Categorias.FirstOrDefaultAsync(x => x.Id == id);
+    if (categoria is null) return Results.NotFound();
+    categoria.Nome = input.Nome;
+    categoria.Descricao = input.Descricao;
+    await db.SaveChangesAsync();
+    return Results.Ok(categoria);
+});
+
+app.MapDelete("/categorias/{id}", async (int id, AppDbContext db) =>
+{
+    var categoria = await db.Categorias.FirstOrDefaultAsync(x => x.Id == id);
+    if (categoria is null) return Results.NotFound();
+    db.Categorias.Remove(categoria);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
 
 app.Run();
