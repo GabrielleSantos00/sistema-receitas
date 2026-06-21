@@ -3,7 +3,7 @@
 ## Integrantes
 
 * Gabrielle Santos
-* Júlia Chrispim
+* Jullia Chrispim
 * Isabella Oliveira
 * Vitória Marconcin
 
