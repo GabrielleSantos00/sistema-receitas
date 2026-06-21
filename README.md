@@ -1,5 +1,3 @@
-# sistema-receitas
-
 # Sistema de Receitas
 
 ## Integrantes
